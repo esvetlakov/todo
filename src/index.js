@@ -1,17 +1,27 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+import AppHeader from "./components/app-header";
+import TodoList from "./components/task-list";
+import Footer from "./components/footer";
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+const App = () => {
+  const todoData = [
+    { taskName: "Test", status: "completed", created: "1 min ago", id: 1 },
+    { taskName: "Test2", status: "editing", created: "5 mins ago", id: 2 },
+    { taskName: "Test3", status: "", created: "10 sec ago", id: 3 },
+  ];
+
+  return (
+    <section className="todoapp">
+      <AppHeader />
+      <section className="main">
+        <TodoList todos={todoData} />
+        <Footer />
+      </section>
+    </section>
+  );
+};
+
+ReactDOM.render(<App />, document.getElementById("root"));
