@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import "./index.css";
 
 import AppHeader from "./components/app-header";
-import TodoList from "./components/task-list";
+import TaskList from "./components/task-list";
 import Footer from "./components/footer";
 
 const App = () => {
@@ -17,7 +17,7 @@ const App = () => {
     <section className="todoapp">
       <AppHeader />
       <section className="main">
-        <TodoList todos={todoData} />
+        <TaskList todos={todoData} />
         <Footer />
       </section>
     </section>

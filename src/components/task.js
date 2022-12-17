@@ -1,18 +1,28 @@
-import React from "react";
+import React, { Component } from "react";
 
-const ListItem = ({ taskName, created }) => {
+export default class Task extends Component {
 
-  return (
-    <div className="view">
-      <input className="toggle" type="checkbox" />
-      <label>
-        <span className="description">{taskName}</span>
-        <span className="created">{created}</span>
-      </label>
-      <button className="icon icon-edit"></button>
-      <button className="icon icon-destroy"></button>
-    </div>
-  );
-};
+  state = {
+    status: 'uncompleted'
+  }
 
-export default ListItem;
+  onToggleClick = () => {
+    console.log(`Done ${this.props.taskName}`);
+  };
+
+  render() {
+    const { taskName, created } = this.props;
+
+    return (
+      <div className="view">
+        <input className="toggle" type="checkbox" onClick={this.onToggleClick} />
+        <label>
+          <span className="description">{taskName}</span>
+          <span className="created">{created}</span>
+        </label>
+        <button className="icon icon-edit"></button>
+        <button className="icon icon-destroy"></button>
+      </div>
+    );
+  }
+}
