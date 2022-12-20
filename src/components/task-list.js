@@ -1,25 +1,38 @@
-import React from "react";
+import React, { Component } from "react";
 import Task from "./task";
 
-const TaskList = ({ todos }) => {
-  const elements = todos.map((item) => {
-    const { id, status = "", ...itemProps } = item;
+export default class TaskList extends Component {
+  render() {
+    const { todos, onMarkCompleted, onDelete, onEditClick } = this.props;
 
-    const Editing = () => {
-      if (status === "editing") {
-        return <input type="text" className="edit" value="Editing task" />;
-      }
-    };
+    const elements = todos.map((item) => {
+      const { id, status = "", ...itemProps } = item;
 
-    return (
-      <li key={id} className={status}>
-        <Task {...itemProps} />
-        <Editing />
-      </li>
-    );
-  });
+      const Editing = () => {
+        if (status === "editing") {
+          return <input type="text" className="edit" />;
+        }
+      };
 
-  return <ul className="todo-list">{elements}</ul>;
-};
+      return (
+        <li key={id} className={status}>
+          <Task
+            {...itemProps}
+            onMarkCompleted={() => {
+              onMarkCompleted(id);
+            }}
+            onDelete={() => {
+              onDelete(id);
+            }}
+            onEditClick={() => {
+              onEditClick(id);
+            }}
+          />
+          <Editing />
+        </li>
+      );
+    });
 
-export default TaskList;
+    return <ul className="todo-list">{elements}</ul>;
+  }
+}
