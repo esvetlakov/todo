@@ -1,27 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom";
+//import { createRoot } from "react-dom/client";
+
 import "./index.css";
+import App from "./components/app";
 
-import AppHeader from "./components/app-header";
-import TodoList from "./components/task-list";
-import Footer from "./components/footer";
 
-const App = () => {
-  const todoData = [
-    { taskName: "Test", status: "completed", created: "1 min ago", id: 1 },
-    { taskName: "Test2", status: "editing", created: "5 mins ago", id: 2 },
-    { taskName: "Test3", status: "", created: "10 sec ago", id: 3 },
-  ];
+//const root = createRoot(document.getElementById("root"));
 
-  return (
-    <section className="todoapp">
-      <AppHeader />
-      <section className="main">
-        <TodoList todos={todoData} />
-        <Footer />
-      </section>
-    </section>
-  );
-};
 
 ReactDOM.render(<App />, document.getElementById("root"));
+//root.render(<App />);

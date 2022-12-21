@@ -1,25 +1,44 @@
-import React from "react";
-import ListItem from "./task";
+import React, { Component } from "react";
+import Task from "./task";
 
-const TodoList = ({ todos }) => {
-  const elements = todos.map((item) => {
-    const { id, status = "", ...itemProps } = item;
+export default class TaskList extends Component {
+  render() {
+    const { todos, onMarkCompleted, onDelete, onEditClick, onItemChange, editingValue } = this.props;
 
-    const Editing = () => {
-      if (status === "editing") {
-        return <input type="text" className="edit" value='Editing task'/>;
+    const handleKeyUp = (e, id) => {
+      if (e.key === "Enter") {
+        onItemChange(document.getElementsByClassName("edit")[0].value, id);
       }
     };
 
-    return (
-      <li key={id} className={status}>
-        <ListItem {...itemProps} />
-        <Editing />
-      </li>
-    );
-  });
+    const elements = todos.map((item) => {
+      const { id, status = "", ...itemProps } = item;
 
-  return <ul className="todo-list">{elements}</ul>;
-};
+      const Editing = () => {
+        if (status === "editing") {
+          return <input type="text" className="edit" defaultValue={editingValue.taskName} onKeyUp={(e) => handleKeyUp(e, editingValue.id)} autoFocus />;
+        }
+      };
 
-export default TodoList;
+      return (
+        <li key={id} className={status}>
+          <Task
+            {...itemProps}
+            onMarkCompleted={() => {
+              onMarkCompleted(id);
+            }}
+            onDelete={() => {
+              onDelete(id);
+            }}
+            onEditClick={() => {
+              onEditClick(id);
+            }}
+          />
+          <Editing />
+        </li>
+      );
+    });
+
+    return <ul className="todo-list">{elements}</ul>;
+  }
+}
