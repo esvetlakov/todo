@@ -3,14 +3,20 @@ import Task from "./task";
 
 export default class TaskList extends Component {
   render() {
-    const { todos, onMarkCompleted, onDelete, onEditClick } = this.props;
+    const { todos, onMarkCompleted, onDelete, onEditClick, onItemChange, editingValue } = this.props;
+
+    const handleKeyUp = (e, id) => {
+      if (e.key === "Enter") {
+        onItemChange(document.getElementsByClassName("edit")[0].value, id);
+      }
+    };
 
     const elements = todos.map((item) => {
       const { id, status = "", ...itemProps } = item;
 
       const Editing = () => {
         if (status === "editing") {
-          return <input type="text" className="edit" />;
+          return <input type="text" className="edit" defaultValue={editingValue.taskName} onKeyUp={(e) => handleKeyUp(e, editingValue.id)} autoFocus />;
         }
       };
 
