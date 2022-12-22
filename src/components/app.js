@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { formatDistanceToNow, parseISO } from "date-fns";
 
 import AppHeader from "./app-header";
 import TaskList from "./task-list";
@@ -11,21 +12,35 @@ export default class App extends Component {
 
   state = {
     todoData: [
-      { taskName: "Test", status: "uncompleted", created: this.date, id: 1 },
-      { taskName: "Test2", status: "uncompleted", created: this.date, id: 2 },
-      { taskName: "Test3", status: "uncompleted", created: this.date, id: 3 },
+      { taskName: "Test", status: false, editing: false, hidden: false, timestamp: this.date, created: formatDistanceToNow(parseISO(this.date)), id: 1 },
+      { taskName: "Test2", status: false, editing: false, hidden: false, timestamp: this.date, created: formatDistanceToNow(parseISO(this.date)), id: 2 },
+      { taskName: "Test3", status: false, editing: false, hidden: false, timestamp: this.date, created: formatDistanceToNow(parseISO(this.date)), id: 3 },
     ],
-    itemsLeft: 0,
   };
 
+  // func to update created state
+  /*
+  updateCreated = () => {
+    setInterval(() => {
+      const newState = [...this.state.todoData];
+      newState.forEach((el) => {
+        el.created = formatDistanceToNow(parseISO(el.timestamp));
+      });
+      this.setState({todoData: newState})
+      console.log(newState);
+    }, 5000);
+  };
+ */
+
+  // func to mark task as completed
   markComplete = (id) => {
     this.setState(({ todoData }) => {
       const idx = todoData.findIndex((el) => el.id === id);
       const newData = JSON.parse(JSON.stringify(todoData));
-      if (newData[idx].status === "uncompleted") {
-        newData[idx].status = "completed";
+      if (newData[idx].status === false) {
+        newData[idx].status = true;
       } else {
-        newData[idx].status = "uncompleted";
+        newData[idx].status = false;
       }
       return {
         todoData: newData,
@@ -33,6 +48,7 @@ export default class App extends Component {
     });
   };
 
+  // func to delete task
   deleteItem = (id) => {
     this.setState(({ todoData }) => {
       const idx = todoData.findIndex((el) => el.id === id);
@@ -43,13 +59,17 @@ export default class App extends Component {
     });
   };
 
+  // func to create a new task
   addItem = (value) => {
     if (value !== "") {
       const date = JSON.parse(JSON.stringify(new Date()));
       const newItem = {
         taskName: value,
-        status: "uncompleted",
-        created: date,
+        status: false,
+        editing: false,
+        hidden: false,
+        timestamp: date,
+        created: formatDistanceToNow(parseISO(date)),
         id: this.uid++,
       };
       this.setState(({ todoData }) => {
@@ -61,11 +81,12 @@ export default class App extends Component {
     }
   };
 
+  // funcs to edit a task
   editClick = (id) => {
     this.setState(({ todoData }) => {
       const idx = todoData.findIndex((el) => el.id === id);
       const newData = JSON.parse(JSON.stringify(todoData));
-      newData[idx].status = "editing";
+      newData[idx].editing = true;
       return {
         todoData: newData,
       };
@@ -77,31 +98,57 @@ export default class App extends Component {
       const idx = todoData.findIndex((el) => el.id === id);
       const newData = JSON.parse(JSON.stringify(todoData));
       newData[idx].taskName = value;
-      newData[idx].status = "uncompleted";
+      newData[idx].editing = false;
       return {
         todoData: newData,
       };
     });
   };
+  //
 
+  // func to delete all completed tasks
   clearCompleted = () => {
     this.state.todoData.forEach((el) => {
-      if (el.status === "completed") this.deleteItem(el.id);
+      if (el.status === true) this.deleteItem(el.id);
     });
   };
 
-  itemsFilter = (type) => {};
+
+  // task filter func
+  taskFilter = (type) => {
+    const newState = [...this.state.todoData]
+    newState.forEach((el) => {el.hidden = false})
+    //show all
+    if (type === 'all') {
+      newState.forEach((el) => {
+        el.hidden = false
+      })
+      this.setState({todoData: newState})
+      //show not completed
+    } else if(type === 'active') {
+      newState.forEach((el) => {
+        if(el.status === true) el.hidden = true
+      })
+      this.setState({todoData: newState})
+      //show only completed
+    } else if( type === 'completed') {
+      newState.forEach((el) => {
+        if(el.status === false) el.hidden = true
+      })
+      this.setState({todoData: newState})
+    }
+  };
 
   render() {
-    const leftCount = this.state.todoData.filter((el) => el.status === "uncompleted" || el.status === "editing").length;
-    const editingValue = this.state.todoData.find((el) => el.status === "editing");
+    const leftCount = this.state.todoData.filter((el) => el.status === false || el.editing === true).length;
+    const editingValue = this.state.todoData.find((el) => el.editing === true);
 
     return (
       <section className="todoapp">
         <AppHeader onItemAdd={this.addItem} />
         <section className="main">
           <TaskList todos={this.state.todoData} onMarkCompleted={this.markComplete} onDelete={this.deleteItem} onEditClick={this.editClick} editingValue={editingValue} onItemChange={this.editItem} />
-          <Footer itemsLeft={leftCount} onClearCompleted={this.clearCompleted} onFilterClick={this.itemsFilter} />
+          <Footer itemsLeft={leftCount} onClearCompleted={this.clearCompleted} taskFilter={this.taskFilter} />
         </section>
       </section>
     );
