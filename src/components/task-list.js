@@ -2,6 +2,18 @@ import React, { Component } from "react";
 import Task from "./task";
 
 export default class TaskList extends Component {
+
+  classNameSet = (status, editing, hidden) => {
+    if (hidden === true) {return 'hidden'}
+    if(editing === true) {
+      return 'editing'
+    } else if (status === true) {
+      return 'completed'
+    } else if (status === false) {
+      return 'uncompleted'
+    }
+  }
+  
   render() {
     const { todos, onMarkCompleted, onDelete, onEditClick, onItemChange, editingValue } = this.props;
 
@@ -12,16 +24,16 @@ export default class TaskList extends Component {
     };
 
     const elements = todos.map((item) => {
-      const { id, status = "", ...itemProps } = item;
+      const { id, status, hidden, editing, ...itemProps } = item;
 
-      const Editing = () => {
-        if (status === "editing") {
+      const EditingItem = () => {
+        if (editing === true) {
           return <input type="text" className="edit" defaultValue={editingValue.taskName} onKeyUp={(e) => handleKeyUp(e, editingValue.id)} autoFocus />;
         }
       };
 
       return (
-        <li key={id} className={status}>
+        <li key={id} className={this.classNameSet(status, editing, hidden)}>
           <Task
             {...itemProps}
             onMarkCompleted={() => {
@@ -34,7 +46,7 @@ export default class TaskList extends Component {
               onEditClick(id);
             }}
           />
-          <Editing />
+          <EditingItem />
         </li>
       );
     });
