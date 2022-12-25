@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import { formatDistanceToNow, parseISO } from "date-fns";
+import React, { Component } from 'react';
+import { formatDistanceToNow, parseISO } from 'date-fns';
 
-import AppHeader from "./app-header";
-import TaskList from "./task-list";
-import Footer from "./footer";
+import AppHeader from '../app-header/app-header';
+import TaskList from '../task-list/task-list';
+import Footer from '../footer/footer';
 
 export default class App extends Component {
   uid = 100;
@@ -12,25 +12,51 @@ export default class App extends Component {
 
   state = {
     todoData: [
-      { taskName: "Test", status: false, editing: false, hidden: false, timestamp: this.date, created: formatDistanceToNow(parseISO(this.date)), id: 1 },
-      { taskName: "Test2", status: false, editing: false, hidden: false, timestamp: this.date, created: formatDistanceToNow(parseISO(this.date)), id: 2 },
-      { taskName: "Test3", status: false, editing: false, hidden: false, timestamp: this.date, created: formatDistanceToNow(parseISO(this.date)), id: 3 },
+      {
+        taskName: 'Test',
+        status: false,
+        editing: false,
+        hidden: false,
+        timestamp: '2022-12-25T11:12:47.610Z',
+        created: formatDistanceToNow(parseISO('2022-12-25T11:12:47.610Z')),
+        id: 1,
+      },
+      {
+        taskName: 'Test2',
+        status: false,
+        editing: false,
+        hidden: false,
+        timestamp: this.date,
+        created: formatDistanceToNow(parseISO(this.date)),
+        id: 2,
+      },
+      {
+        taskName: 'Test3',
+        status: false,
+        editing: false,
+        hidden: false,
+        timestamp: '2022-11-25T13:12:47.610Z',
+        created: formatDistanceToNow(parseISO('2022-11-25T13:12:47.610Z')),
+        id: 3,
+      },
     ],
   };
 
   // func to update created state
-  /*
+
   updateCreated = () => {
     setInterval(() => {
       const newState = [...this.state.todoData];
       newState.forEach((el) => {
         el.created = formatDistanceToNow(parseISO(el.timestamp));
       });
-      this.setState({todoData: newState})
-      console.log(newState);
-    }, 5000);
+      this.setState({ todoData: newState });
+    }, 10000);
   };
- */
+
+  componentDidMount() {
+    this.updateCreated();
+  }
 
   // func to mark task as completed
   markComplete = (id) => {
@@ -61,7 +87,7 @@ export default class App extends Component {
 
   // func to create a new task
   addItem = (value) => {
-    if (value !== "") {
+    if (value !== '') {
       const date = JSON.parse(JSON.stringify(new Date()));
       const newItem = {
         taskName: value,
@@ -113,29 +139,30 @@ export default class App extends Component {
     });
   };
 
-
   // task filter func
   taskFilter = (type) => {
-    const newState = [...this.state.todoData]
-    newState.forEach((el) => {el.hidden = false})
+    const newState = [...this.state.todoData];
+    newState.forEach((el) => {
+      el.hidden = false;
+    });
     //show all
     if (type === 'all') {
       newState.forEach((el) => {
-        el.hidden = false
-      })
-      this.setState({todoData: newState})
+        el.hidden = false;
+      });
+      this.setState({ todoData: newState });
       //show not completed
-    } else if(type === 'active') {
+    } else if (type === 'active') {
       newState.forEach((el) => {
-        if(el.status === true) el.hidden = true
-      })
-      this.setState({todoData: newState})
+        if (el.status === true) el.hidden = true;
+      });
+      this.setState({ todoData: newState });
       //show only completed
-    } else if( type === 'completed') {
+    } else if (type === 'completed') {
       newState.forEach((el) => {
-        if(el.status === false) el.hidden = true
-      })
-      this.setState({todoData: newState})
+        if (el.status === false) el.hidden = true;
+      });
+      this.setState({ todoData: newState });
     }
   };
 

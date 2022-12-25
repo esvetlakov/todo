@@ -1,6 +1,15 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 export default class TasksFilter extends Component {
+  static defaultProps = {
+    taskFilter: () => {},
+  };
+
+  static propTypes = {
+    taskFilter: PropTypes.func,
+  };
+
   state = {
     all: true,
     active: false,
@@ -26,9 +35,9 @@ export default class TasksFilter extends Component {
       <ul className="filters">
         <li>
           <button
-            className={this.state.all === true ? "selected" : ""}
+            className={this.state.all === true ? 'selected' : ''}
             onClick={() => {
-              this.onFilterClick("all");
+              this.onFilterClick('all');
             }}
           >
             All
@@ -36,9 +45,9 @@ export default class TasksFilter extends Component {
         </li>
         <li>
           <button
-            className={this.state.active === true ? "selected" : ""}
+            className={this.state.active === true ? 'selected' : ''}
             onClick={() => {
-              this.onFilterClick("active");
+              this.onFilterClick('active');
             }}
           >
             Active
@@ -46,9 +55,9 @@ export default class TasksFilter extends Component {
         </li>
         <li>
           <button
-            className={this.state.completed === true ? "selected" : ""}
+            className={this.state.completed === true ? 'selected' : ''}
             onClick={() => {
-              this.onFilterClick("completed");
+              this.onFilterClick('completed');
             }}
           >
             Completed
