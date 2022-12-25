@@ -1,8 +1,8 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
 export default class AppHeader extends Component {
   state = {
-    label: "",
+    label: '',
   };
 
   onLabelChange = (e) => {
@@ -12,10 +12,10 @@ export default class AppHeader extends Component {
   };
 
   onSubmit = (e) => {
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       this.props.onItemAdd(this.state.label);
       this.setState({
-        label: "",
+        label: '',
       });
     }
   };

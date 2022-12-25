@@ -1,6 +1,20 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 export default class Task extends Component {
+  static defaultProps = {
+    onMarkCompleted: () => {},
+    onDelete: () => {},
+    onEditClick: () => {},
+  };
+
+  static propTypes = {
+    onMarkCompleted: PropTypes.func,
+    onDelete: PropTypes.func,
+    onEditClick: PropTypes.func,
+    taskName: PropTypes.string,
+    created: PropTypes.string,
+  };
 
   render() {
     const { taskName, created, onMarkCompleted, onDelete, onEditClick } = this.props;
