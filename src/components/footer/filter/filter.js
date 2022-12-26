@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 
 export default class TasksFilter extends Component {
@@ -19,23 +19,19 @@ export default class TasksFilter extends Component {
   onFilterClick = (type) => {
     const { taskFilter } = this.props;
     taskFilter(type);
-    const newState = {
-      all: false,
-      active: false,
-      completed: false,
-    };
+    const newState = { all: false, active: false, completed: false };
     newState[type] = true;
-    this.setState((state) => {
-      return (state = newState);
-    });
+    this.setState(newState);
   };
 
   render() {
+    const { all, active, completed } = this.state;
     return (
       <ul className="filters">
         <li>
           <button
-            className={this.state.all === true ? 'selected' : ''}
+            type="button"
+            className={all === true ? 'selected' : ''}
             onClick={() => {
               this.onFilterClick('all');
             }}
@@ -45,7 +41,8 @@ export default class TasksFilter extends Component {
         </li>
         <li>
           <button
-            className={this.state.active === true ? 'selected' : ''}
+            type="button"
+            className={active === true ? 'selected' : ''}
             onClick={() => {
               this.onFilterClick('active');
             }}
@@ -55,7 +52,8 @@ export default class TasksFilter extends Component {
         </li>
         <li>
           <button
-            className={this.state.completed === true ? 'selected' : ''}
+            type="button"
+            className={completed === true ? 'selected' : ''}
             onClick={() => {
               this.onFilterClick('completed');
             }}

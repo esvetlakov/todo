@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import { formatDistanceToNow, parseISO } from 'date-fns';
 
 import AppHeader from '../app-header/app-header';
@@ -13,8 +13,8 @@ export default class App extends Component {
   state = {
     todoData: [
       {
-        taskName: 'Test',
-        status: false,
+        taskName: 'Completed task',
+        status: true,
         editing: false,
         hidden: false,
         timestamp: '2022-12-25T11:12:47.610Z',
@@ -22,7 +22,7 @@ export default class App extends Component {
         id: 1,
       },
       {
-        taskName: 'Test2',
+        taskName: 'Active task',
         status: false,
         editing: false,
         hidden: false,
@@ -31,7 +31,7 @@ export default class App extends Component {
         id: 2,
       },
       {
-        taskName: 'Test3',
+        taskName: 'Active task',
         status: false,
         editing: false,
         hidden: false,
@@ -44,25 +44,27 @@ export default class App extends Component {
 
   // func to update created state
 
+  componentDidMount() {
+    this.updateCreated();
+  }
+
   updateCreated = () => {
     setInterval(() => {
-      const newState = [...this.state.todoData];
-      newState.forEach((el) => {
-        el.created = formatDistanceToNow(parseISO(el.timestamp));
+      const { todoData } = this.state;
+      const newState = todoData.map((el) => {
+        const elem = { ...el };
+        elem.created = formatDistanceToNow(parseISO(el.timestamp));
+        return elem;
       });
       this.setState({ todoData: newState });
     }, 10000);
   };
 
-  componentDidMount() {
-    this.updateCreated();
-  }
-
   // func to mark task as completed
   markComplete = (id) => {
     this.setState(({ todoData }) => {
       const idx = todoData.findIndex((el) => el.id === id);
-      const newData = JSON.parse(JSON.stringify(todoData));
+      const newData = [...todoData];
       if (newData[idx].status === false) {
         newData[idx].status = true;
       } else {
@@ -89,6 +91,7 @@ export default class App extends Component {
   addItem = (value) => {
     if (value !== '') {
       const date = JSON.parse(JSON.stringify(new Date()));
+      this.uid += 1;
       const newItem = {
         taskName: value,
         status: false,
@@ -96,7 +99,7 @@ export default class App extends Component {
         hidden: false,
         timestamp: date,
         created: formatDistanceToNow(parseISO(date)),
-        id: this.uid++,
+        id: this.uid,
       };
       this.setState(({ todoData }) => {
         const newArr = [...todoData, newItem];
@@ -111,7 +114,7 @@ export default class App extends Component {
   editClick = (id) => {
     this.setState(({ todoData }) => {
       const idx = todoData.findIndex((el) => el.id === id);
-      const newData = JSON.parse(JSON.stringify(todoData));
+      const newData = [...todoData];
       newData[idx].editing = true;
       return {
         todoData: newData,
@@ -122,7 +125,7 @@ export default class App extends Component {
   editItem = (value, id) => {
     this.setState(({ todoData }) => {
       const idx = todoData.findIndex((el) => el.id === id);
-      const newData = JSON.parse(JSON.stringify(todoData));
+      const newData = [...todoData];
       newData[idx].taskName = value;
       newData[idx].editing = false;
       return {
@@ -134,47 +137,64 @@ export default class App extends Component {
 
   // func to delete all completed tasks
   clearCompleted = () => {
-    this.state.todoData.forEach((el) => {
+    const { todoData } = this.state;
+    todoData.forEach((el) => {
       if (el.status === true) this.deleteItem(el.id);
     });
   };
 
   // task filter func
   taskFilter = (type) => {
-    const newState = [...this.state.todoData];
-    newState.forEach((el) => {
-      el.hidden = false;
+    const { todoData } = this.state;
+    let newState = todoData.map((el) => {
+      const elem = { ...el };
+      elem.hidden = false;
+      return elem;
     });
-    //show all
+    // show all
     if (type === 'all') {
-      newState.forEach((el) => {
-        el.hidden = false;
+      newState = newState.map((el) => {
+        const elem = { ...el };
+        elem.hidden = false;
+        return elem;
       });
       this.setState({ todoData: newState });
-      //show not completed
+      // show not completed
     } else if (type === 'active') {
-      newState.forEach((el) => {
-        if (el.status === true) el.hidden = true;
+      newState = newState.map((el) => {
+        const elem = { ...el };
+        if (elem.status === true) elem.hidden = true;
+        return elem;
       });
       this.setState({ todoData: newState });
-      //show only completed
+      // show only completed
     } else if (type === 'completed') {
-      newState.forEach((el) => {
-        if (el.status === false) el.hidden = true;
+      newState = newState.map((el) => {
+        const elem = { ...el };
+        if (elem.status === false) elem.hidden = true;
+        return elem;
       });
       this.setState({ todoData: newState });
     }
   };
 
   render() {
-    const leftCount = this.state.todoData.filter((el) => el.status === false || el.editing === true).length;
-    const editingValue = this.state.todoData.find((el) => el.editing === true);
+    const { todoData } = this.state;
+    const leftCount = todoData.filter((el) => el.status === false || el.editing === true).length;
+    const editingValue = todoData.find((el) => el.editing === true);
 
     return (
       <section className="todoapp">
         <AppHeader onItemAdd={this.addItem} />
         <section className="main">
-          <TaskList todos={this.state.todoData} onMarkCompleted={this.markComplete} onDelete={this.deleteItem} onEditClick={this.editClick} editingValue={editingValue} onItemChange={this.editItem} />
+          <TaskList
+            todos={todoData}
+            onMarkCompleted={this.markComplete}
+            onDelete={this.deleteItem}
+            onEditClick={this.editClick}
+            editingValue={editingValue}
+            onItemChange={this.editItem}
+          />
           <Footer itemsLeft={leftCount} onClearCompleted={this.clearCompleted} taskFilter={this.taskFilter} />
         </section>
       </section>

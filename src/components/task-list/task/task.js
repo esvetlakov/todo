@@ -1,33 +1,30 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-export default class Task extends Component {
-  static defaultProps = {
-    onMarkCompleted: () => {},
-    onDelete: () => {},
-    onEditClick: () => {},
-  };
-
-  static propTypes = {
-    onMarkCompleted: PropTypes.func,
-    onDelete: PropTypes.func,
-    onEditClick: PropTypes.func,
-    taskName: PropTypes.string,
-    created: PropTypes.string,
-  };
-
-  render() {
-    const { taskName, created, onMarkCompleted, onDelete, onEditClick } = this.props;
-    return (
-      <div className="view">
-        <input className="toggle" type="checkbox" onClick={onMarkCompleted} />
-        <label>
-          <span className="description">{taskName}</span>
-          <span className="created">created {created} ago</span>
-        </label>
-        <button className="icon icon-edit" onClick={onEditClick} />
-        <button className="icon icon-destroy" onClick={onDelete} />
-      </div>
-    );
-  }
+function Task(props) {
+  const { taskName, created, onMarkCompleted, onDelete, onEditClick, status } = props;
+  return (
+    <div className="view">
+      <input className="toggle" type="checkbox" onClick={onMarkCompleted} defaultChecked={status} />
+      <label>
+        <span className="description">{taskName}</span>
+        <span className="created">created {created} ago</span>
+      </label>
+      <button type="button" aria-label="edit item" className="icon icon-edit" onClick={onEditClick} />
+      <button type="button" aria-label="delete item" className="icon icon-destroy" onClick={onDelete} />
+    </div>
+  );
 }
+
+Task.defaultProps = {
+  onMarkCompleted: () => {},
+  onDelete: () => {},
+  onEditClick: () => {},
+};
+
+Task.propTypes = {
+  onMarkCompleted: PropTypes.func,
+  onDelete: PropTypes.func,
+  onEditClick: PropTypes.func,
+};
+
+export default Task;
