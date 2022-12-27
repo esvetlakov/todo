@@ -330,7 +330,9 @@ body {
 }
 
 .filters li input {
-	display: none;
+	appearance: none;
+	padding: 0;
+	margin: 0;
 }
 
 .filters li label {
