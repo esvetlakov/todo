@@ -5,7 +5,7 @@ module.exports = {
     jest: true,
   },
   ignorePatterns: ['node_modules', 'dist', 'build'],
-  extends: ['airbnb', 'airbnb/hooks', 'plugin:react/jsx-runtime', 'prettier'],
+  extends: ['airbnb', 'airbnb/hooks', 'plugin:react/jsx-runtime', "plugin:react/recommended", 'prettier'],
   parser: '@babel/eslint-parser',
   parserOptions: {
     requireConfigFile: false,
