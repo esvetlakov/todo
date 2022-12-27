@@ -77,7 +77,7 @@ export default class App extends Component {
   };
 
   // func to delete task
-  deleteItem = (id) => {
+  deleteTask = (id) => {
     this.setState(({ todoData }) => {
       const idx = todoData.findIndex((el) => el.id === id);
       const newArr = [...todoData.slice(0, idx), ...todoData.slice(idx + 1)];
@@ -89,7 +89,7 @@ export default class App extends Component {
 
   // func to create a new task
   addItem = (value) => {
-    if (value !== '') {
+    if (value.split(' ').join('') !== '') {
       const date = JSON.parse(JSON.stringify(new Date()));
       this.uid += 1;
       const newItem = {
@@ -107,6 +107,9 @@ export default class App extends Component {
           todoData: newArr,
         };
       });
+    } else {
+      // eslint-disable-next-line
+      alert('Task cannot be empty');
     }
   };
 
@@ -123,15 +126,20 @@ export default class App extends Component {
   };
 
   editItem = (value, id) => {
-    this.setState(({ todoData }) => {
-      const idx = todoData.findIndex((el) => el.id === id);
-      const newData = [...todoData];
-      newData[idx].taskName = value;
-      newData[idx].editing = false;
-      return {
-        todoData: newData,
-      };
-    });
+    if (value.split(' ').join('') === '') {
+      // eslint-disable-next-line
+      alert('Task cannot be empty');
+    } else {
+      this.setState(({ todoData }) => {
+        const idx = todoData.findIndex((el) => el.id === id);
+        const newData = [...todoData];
+        newData[idx].taskName = value;
+        newData[idx].editing = false;
+        return {
+          todoData: newData,
+        };
+      });
+    }
   };
   //
 
@@ -139,7 +147,7 @@ export default class App extends Component {
   clearCompleted = () => {
     const { todoData } = this.state;
     todoData.forEach((el) => {
-      if (el.status === true) this.deleteItem(el.id);
+      if (el.status === true) this.deleteTask(el.id);
     });
   };
 
@@ -190,7 +198,7 @@ export default class App extends Component {
           <TaskList
             todos={todoData}
             onMarkCompleted={this.markComplete}
-            onDelete={this.deleteItem}
+            onDelete={this.deleteTask}
             onEditClick={this.editClick}
             editingValue={editingValue}
             onItemChange={this.editItem}

@@ -1,5 +1,7 @@
 import { Component } from 'react';
 
+import NewTask from '../new-task/new-task';
+
 export default class AppHeader extends Component {
   state = {
     label: '',
@@ -14,12 +16,11 @@ export default class AppHeader extends Component {
   onSubmit = (e) => {
     const { onItemAdd } = this.props;
     const { label } = this.state;
-    if (e.key === 'Enter') {
-      onItemAdd(label);
-      this.setState({
-        label: '',
-      });
-    }
+    e.preventDefault();
+    onItemAdd(label);
+    this.setState({
+      label: '',
+    });
   };
 
   render() {
@@ -27,13 +28,7 @@ export default class AppHeader extends Component {
     return (
       <header className="header">
         <h1>todos</h1>
-        <input
-          className="new-todo"
-          placeholder="What needs to be done?"
-          value={label}
-          onChange={this.onLabelChange}
-          onKeyUp={this.onSubmit}
-        />
+        <NewTask label={label} onLabelChange={this.onLabelChange} onSubmit={this.onSubmit} />
       </header>
     );
   }

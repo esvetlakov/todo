@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-import TasksFilter from './filter/filter';
+import TasksFilter from '../filter/filter';
 
 function Footer(props) {
   const { onClearCompleted, taskFilter, itemsLeft } = props;
