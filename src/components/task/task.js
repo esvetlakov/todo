@@ -6,8 +6,13 @@ function Task(props) {
     <div className="view">
       <input className="toggle" type="checkbox" onClick={onMarkCompleted} defaultChecked={status} />
       <label>
-        <span className="description">{taskName}</span>
-        <span className="created">created {created} ago</span>
+        <span className="title">{taskName}</span>
+        <span className="description">
+          <button type="button" className="icon icon-play" aria-label="start timer" />
+          <button type="button" className="icon icon-pause" aria-label="pause timer" />
+          time
+        </span>
+        <span className="description">{created} ago</span>
       </label>
       <button type="button" aria-label="edit item" className="icon icon-edit" onClick={onEditClick} />
       <button type="button" aria-label="delete item" className="icon icon-destroy" onClick={onDelete} />

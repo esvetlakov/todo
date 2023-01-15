@@ -89,6 +89,7 @@ export default class App extends Component {
 
   // func to create a new task
   addItem = (value) => {
+    console.log(value);
     if (value.split(' ').join('') !== '') {
       const date = JSON.parse(JSON.stringify(new Date()));
       this.uid += 1;
@@ -192,7 +193,7 @@ export default class App extends Component {
     const editingValue = todoData.find((el) => el.editing === true);
 
     return (
-      <section className="todoapp">
+      <>
         <AppHeader onItemAdd={this.addItem} />
         <section className="main">
           <TaskList
@@ -205,7 +206,7 @@ export default class App extends Component {
           />
           <Footer itemsLeft={leftCount} onClearCompleted={this.clearCompleted} taskFilter={this.taskFilter} />
         </section>
-      </section>
+      </>
     );
   }
 }
