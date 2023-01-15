@@ -5,6 +5,8 @@ import NewTask from '../new-task/new-task';
 export default class AppHeader extends Component {
   state = {
     label: '',
+    min: '',
+    sec: '',
   };
 
   onLabelChange = (e) => {
@@ -13,23 +15,42 @@ export default class AppHeader extends Component {
     });
   };
 
+  onMinChange = (e) => {
+    this.setState({
+      min: e.target.value,
+    });
+  };
+
+  onSecChange = (e) => {
+    this.setState({
+      sec: e.target.value,
+    });
+  };
+
   onSubmit = (e) => {
-    console.log(e);
     const { onItemAdd } = this.props;
-    const { label } = this.state;
+    const { label, min, sec } = this.state;
     e.preventDefault();
-    onItemAdd(label);
+    onItemAdd(label, min, sec);
     this.setState({
       label: '',
     });
   };
 
   render() {
-    const { label } = this.state;
+    const { label, min, sec } = this.state;
     return (
       <header className="header">
         <h1>todos</h1>
-        <NewTask label={label} onLabelChange={this.onLabelChange} onSubmit={this.onSubmit} />
+        <NewTask
+          label={label}
+          min={min}
+          sec={sec}
+          onLabelChange={this.onLabelChange}
+          onMinChange={this.onMinChange}
+          onSecChange={this.onSecChange}
+          onSubmit={this.onSubmit}
+        />
       </header>
     );
   }

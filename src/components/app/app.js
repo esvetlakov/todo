@@ -17,6 +17,8 @@ export default class App extends Component {
         status: true,
         editing: false,
         hidden: false,
+        taskMin: 10,
+        taskSec: 20,
         timestamp: '2022-12-25T11:12:47.610Z',
         created: formatDistanceToNow(parseISO('2022-12-25T11:12:47.610Z')),
         id: 1,
@@ -26,6 +28,8 @@ export default class App extends Component {
         status: false,
         editing: false,
         hidden: false,
+        taskMin: 10,
+        taskSec: 23,
         timestamp: this.date,
         created: formatDistanceToNow(parseISO(this.date)),
         id: 2,
@@ -35,6 +39,8 @@ export default class App extends Component {
         status: false,
         editing: false,
         hidden: false,
+        taskMin: 0,
+        taskSec: 20,
         timestamp: '2022-11-25T13:12:47.610Z',
         created: formatDistanceToNow(parseISO('2022-11-25T13:12:47.610Z')),
         id: 3,
@@ -88,16 +94,17 @@ export default class App extends Component {
   };
 
   // func to create a new task
-  addItem = (value) => {
-    console.log(value);
-    if (value.split(' ').join('') !== '') {
+  addItem = (label, min = 0, sec = 0) => {
+    if (label.trim() !== '') {
       const date = JSON.parse(JSON.stringify(new Date()));
       this.uid += 1;
       const newItem = {
-        taskName: value,
+        taskName: label,
         status: false,
         editing: false,
         hidden: false,
+        taskMin: Number(min),
+        taskSec: Number(sec),
         timestamp: date,
         created: formatDistanceToNow(parseISO(date)),
         id: this.uid,

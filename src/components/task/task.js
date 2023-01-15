@@ -1,16 +1,16 @@
 import PropTypes from 'prop-types';
 
+import Timer from '../timer/timer';
+
 function Task(props) {
-  const { taskName, created, onMarkCompleted, onDelete, onEditClick, status } = props;
+  const { taskName, created, onMarkCompleted, onDelete, onEditClick, status, taskMin, taskSec } = props;
   return (
     <div className="view">
       <input className="toggle" type="checkbox" onClick={onMarkCompleted} defaultChecked={status} />
       <label>
         <span className="title">{taskName}</span>
         <span className="description">
-          <button type="button" className="icon icon-play" aria-label="start timer" />
-          <button type="button" className="icon icon-pause" aria-label="pause timer" />
-          time
+          <Timer min={taskMin} sec={taskSec} />
         </span>
         <span className="description">{created} ago</span>
       </label>

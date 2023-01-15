@@ -90,6 +90,17 @@ body {
 	margin-bottom: 0;
 }
 
+input[type="number"] {
+	-moz-appearance: textfield;
+	-webkit-appearance: textfield;
+	appearance: textfield;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+	display: none;
+}
+
 .new-todo,
 .new-todo-form .new-todo-form__timer,
 .edit {
@@ -114,6 +125,10 @@ body {
 	border: none;
 	background: rgba(0, 0, 0, 0.003);
 	box-shadow: inset 0 -2px 1px rgba(0,0,0,0.03);
+}
+
+.new-todo-form__submit {
+	display: none;
 }
 
 .new-todo {
@@ -242,6 +257,9 @@ body {
 .todo-list li label .description {
 	font-size: 13px;
 	color: gray;
+}
+.todo-list li label .description .time {
+	margin-left: 7px;
 }
 
 .todo-list li label .title {
