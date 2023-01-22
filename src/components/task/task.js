@@ -10,7 +10,7 @@ function Task(props) {
       <label>
         <span className="title">{taskName}</span>
         <span className="description">
-          <Timer min={taskMin} sec={taskSec} />
+          <Timer taskMin={taskMin} taskSec={taskSec} />
         </span>
         <span className="description">{created} ago</span>
       </label>

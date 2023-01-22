@@ -1,54 +1,36 @@
-/* eslint-disable no-plusplus */
-import { Component } from 'react';
+import { useState, useEffect } from 'react';
 
-export default class Timer extends Component {
-  state = {
-    ...this.props,
-  };
+export default function Timer(props) {
+  const { taskMin, taskSec } = props;
+  const [min, setMin] = useState(taskMin);
+  const [sec, setSec] = useState(taskSec);
+  const [active, setActive] = useState(false);
 
-  componentWillUnmount() {
-    clearInterval(this.timerId);
-  }
+  useEffect(() => {
+    const timerId = setInterval(() => {
+      if (active) {
+        if (sec < 60) {
+          setSec((s) => s + 1);
+        }
+        if (sec >= 60) {
+          setSec(0);
+          setMin((m) => m + 1);
+        }
+        if (min >= 60) {
+          setMin(0);
+        }
+      }
+    }, 1000);
+    return () => clearInterval(timerId);
+  }, [active, min, sec]);
 
-  timerPlay = () => {
-    clearInterval(this.timerId);
-    this.timerId = setInterval(() => this.timeCount(), 1000);
-  };
-
-  timeCount = () => {
-    let { min: newMin, sec: newSec } = this.state;
-
-    if (newSec < 60) {
-      newSec += 1;
-    }
-    if (newSec >= 60) {
-      newSec = 0;
-      newMin += 1;
-    }
-    if (newMin >= 60) {
-      newMin = 0;
-    }
-
-    this.setState({
-      min: newMin,
-      sec: newSec,
-    });
-  };
-
-  timePause = () => {
-    clearInterval(this.timerId);
-  };
-
-  render() {
-    const { min, sec } = this.state;
-    return (
-      <>
-        <button type="button" className="icon icon-play" aria-label="start timer" onClick={() => this.timerPlay()} />
-        <button type="button" className="icon icon-pause" aria-label="pause timer" onClick={() => this.timePause()} />
-        <span className="time">
-          {min}:{sec}
-        </span>
-      </>
-    );
-  }
+  return (
+    <>
+      <button type="button" className="icon icon-play" aria-label="start timer" onClick={() => setActive(true)} />
+      <button type="button" className="icon icon-pause" aria-label="pause timer" onClick={() => setActive(false)} />
+      <span className="time">
+        {min}:{sec}
+      </span>
+    </>
+  );
 }

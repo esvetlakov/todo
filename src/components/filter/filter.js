@@ -1,71 +1,67 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 
-export default class TasksFilter extends Component {
-  static defaultProps = {
-    taskFilter: () => {},
-  };
+function TasksFilter(props) {
+  const [filter, setFilter] = useState('all');
 
-  static propTypes = {
-    taskFilter: PropTypes.func,
-  };
-
-  state = {
-    selected: 'all',
-  };
-
-  onFilterClick = (type) => {
-    const { taskFilter } = this.props;
+  const onFilterClick = (type) => {
+    const { taskFilter } = props;
     taskFilter(type);
-    this.setState({ selected: type });
+    setFilter(type);
   };
 
-  render() {
-    const { selected } = this.state;
-    return (
-      <ul className="filters">
-        <form>
-          <li>
-            <label className={selected === 'all' ? 'selected' : ''}>
-              <input
-                type="radio"
-                checked={selected === 'all'}
-                onChange={() => {
-                  this.onFilterClick('all');
-                }}
-                value="all"
-              />
-              All
-            </label>
-          </li>
-          <li>
-            <label className={selected === 'active' ? 'selected' : ''}>
-              <input
-                type="radio"
-                checked={selected === 'active'}
-                onChange={() => {
-                  this.onFilterClick('active');
-                }}
-                value="active"
-              />
-              Active
-            </label>
-          </li>
-          <li>
-            <label className={selected === 'completed' ? 'selected' : ''}>
-              <input
-                type="radio"
-                checked={selected === 'completed'}
-                onChange={() => {
-                  this.onFilterClick('completed');
-                }}
-                value="completed"
-              />
-              Completed
-            </label>
-          </li>
-        </form>
-      </ul>
-    );
-  }
+  return (
+    <ul className="filters">
+      <form>
+        <li>
+          <label className={filter === 'all' ? 'selected' : ''}>
+            <input
+              type="radio"
+              checked={filter === 'all'}
+              onChange={() => {
+                onFilterClick('all');
+              }}
+              value="all"
+            />
+            All
+          </label>
+        </li>
+        <li>
+          <label className={filter === 'active' ? 'selected' : ''}>
+            <input
+              type="radio"
+              checked={filter === 'active'}
+              onChange={() => {
+                onFilterClick('active');
+              }}
+              value="active"
+            />
+            Active
+          </label>
+        </li>
+        <li>
+          <label className={filter === 'completed' ? 'selected' : ''}>
+            <input
+              type="radio"
+              checked={filter === 'completed'}
+              onChange={() => {
+                onFilterClick('completed');
+              }}
+              value="completed"
+            />
+            Completed
+          </label>
+        </li>
+      </form>
+    </ul>
+  );
 }
+
+TasksFilter.defaultProps = {
+  taskFilter: () => {},
+};
+TasksFilter.propTypes = {
+  taskFilter: PropTypes.func,
+};
+
+export default TasksFilter;
