@@ -2,8 +2,7 @@ import PropTypes from 'prop-types';
 
 import Timer from '../timer/timer';
 
-function Task(props) {
-  const { taskName, created, onMarkCompleted, onDelete, onEditClick, status, taskMin, taskSec } = props;
+function Task({ taskName, created, onMarkCompleted, onDelete, onEditClick, status, taskMin, taskSec }) {
   return (
     <div className="view">
       <input className="toggle" type="checkbox" onClick={onMarkCompleted} defaultChecked={status} />

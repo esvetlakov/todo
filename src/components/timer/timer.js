@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 
-export default function Timer(props) {
-  const { taskMin, taskSec } = props;
+export default function Timer({ taskMin, taskSec }) {
   const [min, setMin] = useState(taskMin);
   const [sec, setSec] = useState(taskSec);
   const [active, setActive] = useState(false);

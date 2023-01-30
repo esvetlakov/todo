@@ -6,9 +6,9 @@ import TaskList from '../task-list/task-list';
 import Footer from '../footer/footer';
 
 export default function App() {
-  let uid = 100;
-
   const date = JSON.parse(JSON.stringify(new Date()));
+
+  const [uid, setUid] = useState(100);
 
   const [todoData, setTodoData] = useState([
     {
@@ -94,7 +94,7 @@ export default function App() {
   const addItem = (label, min = 0, sec = 0) => {
     if (label.trim() !== '') {
       const newTaskDate = JSON.parse(JSON.stringify(new Date()));
-      uid += 1;
+      setUid((prev) => prev + 1);
       setTodoData(() => [
         ...todoData,
         {
@@ -133,16 +133,17 @@ export default function App() {
       alert('Task cannot be empty');
     } else {
       const idx = todoData.findIndex((el) => el.id === id);
-      setTodoData(() =>
-        todoData.map((e, index) => {
+      setTodoData((oldData) => {
+        const newTodoData = oldData.map((e, index) => {
           const elem = e;
           if (index === idx) {
             elem.taskName = value;
             elem.editing = false;
           }
           return elem;
-        })
-      );
+        });
+        return newTodoData;
+      });
     }
   };
   //

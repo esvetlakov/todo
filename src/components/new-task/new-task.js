@@ -1,8 +1,6 @@
 import React from 'react';
 
-function NewTask(props) {
-  const { onSubmit, label, min, sec, onLabelChange, onMinChange, onSecChange } = props;
-
+function NewTask({ onSubmit, label, min, sec, onLabelChange, onMinChange, onSecChange }) {
   return (
     <form onSubmit={onSubmit} className="new-todo-form">
       <input

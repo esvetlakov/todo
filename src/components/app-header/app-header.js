@@ -2,13 +2,12 @@ import { useState } from 'react';
 
 import NewTask from '../new-task/new-task';
 
-export default function AppHeader(props) {
+export default function AppHeader({ onItemAdd }) {
   const [label, setLabel] = useState('');
   const [min, setMin] = useState('');
   const [sec, setSec] = useState('');
 
   const onSubmit = (e) => {
-    const { onItemAdd } = props;
     e.preventDefault();
     onItemAdd(label, min, sec);
     setLabel('');

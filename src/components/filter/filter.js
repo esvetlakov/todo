@@ -1,11 +1,10 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 
-function TasksFilter(props) {
+function TasksFilter({ taskFilter }) {
   const [filter, setFilter] = useState('all');
 
   const onFilterClick = (type) => {
-    const { taskFilter } = props;
     taskFilter(type);
     setFilter(type);
   };

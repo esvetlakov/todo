@@ -2,8 +2,7 @@ import PropTypes from 'prop-types';
 
 import TasksFilter from '../filter/filter';
 
-function Footer(props) {
-  const { onClearCompleted, taskFilter, itemsLeft } = props;
+function Footer({ onClearCompleted, taskFilter, itemsLeft }) {
   return (
     <footer className="footer">
       <span className="todo-count">{itemsLeft} items left</span>
